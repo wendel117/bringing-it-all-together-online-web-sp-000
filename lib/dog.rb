@@ -55,6 +55,14 @@ end
     end.first
   end
 
+  def self.find_by_id(id)
+    sql = <<-SQL
+      SELECT * FROM dogs
+      WHERE id = ?
+    SQL
+    DB[:conn].execute(sql, id).map {|row| self.new_from_db(row)}.first
+  end
+
   def self.create(name:, breed:)
     dog = self.new(name: name, breed: breed)
     dog.save
